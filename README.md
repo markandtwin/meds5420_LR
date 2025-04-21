@@ -19,7 +19,7 @@ The pipeline was developed for samples like `WT_D0_1.chr21` and `WT_D7_2.chr21`,
   - NanoPlot (`NanoPlot`)
   - minimap2 (`minimap2`)
   - samtools (`samtools`)
-  - R with Rsubread (`Rsubread`)
+  - featureCounts within subread (`subread`)
 - **Input Files**:
   - FASTQ files (e.g., `/home/FCAM/meds5420/Zhang_LR/fastq/WT_D0_1.chr21.fastq`)
   - Reference genome (e.g., `hg38_chr21.fa`)
