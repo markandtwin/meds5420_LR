@@ -8,9 +8,9 @@ The pipeline processes FASTQ files from long-read RNA-seq (e.g., Oxford Nanopore
 1. **FASTQ Quality Control**: Generate QC reports for FASTQ files using NanoPlot.
 2. **Alignment**: Align FASTQ reads to a reference genome using minimap2.
 3. **BAM Quality Control**: Assess alignment quality with NanoPlot on BAM files.
-4. **Gene Quantification**: Count reads per gene using Rsubread::featureCounts.
+4. **Gene Quantification**: Count reads per gene using featureCounts in subread.
 
-The pipeline was developed for samples like `WT_D0_1.chr21` and `WT_D7_2.chr21`, as used in a differential expression analysis comparing wild-type conditions at day 0 and day 7.
+The pipeline was developed for samples from two conditions like `WT_D0_*` and `WT_D7_*`, as used in a differential expression analysis comparing wild-type conditions at day 0 and day 7.
 
 ## Prerequisites
 
@@ -368,7 +368,7 @@ sbatch 04_featureCounts.sh
 
 ## Notes
 
-- **File Paths**: Update paths in the scripts to match your HPC directory structure (e.g., `/home/FCAM/meds5420/YourUsrName/`). Check all the path with `YourUsrName`.
+- **File Paths**: Update paths in the scripts to match your HPC directory structure (e.g., `/home/FCAM/meds5420/YourUsrName/`). Check all the path with `YourUsrName` `yourname` and `YourAccount`.
 
 - **Viewing NanoPlot Reports**: HTML reports (e.g., `NanoPlot-report.html`) cannot be opened directly on a headless HPC. Transfer to a local machine:
   ```bash
@@ -381,7 +381,7 @@ sbatch 04_featureCounts.sh
 
 ## Troubleshooting
 
-- **Job Failures**: Check Slurm logs (`eofile`) for errors. Ensure modules are loaded (e.g., `module load R minimap2 samtools`).
+- **Job Failures**: Check Slurm logs (`eofile`) for errors. Ensure modules are loaded (e.g., `module load  minimap2 `).
 - **Missing Files**: Verify FASTQ, reference, and GTF files exist. Update script paths if necessary.
 - **featureCounts Error**: If you encounter errors in `04_featureCounts.sh` but the job was completed, ignore the error as the data was extracted for chromosome 21 only. Otherwise, ensure the reference genome and GTF match the BAM files. Re-run `minimap2` with a consistent reference if needed.
 
