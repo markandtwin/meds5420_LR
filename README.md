@@ -372,7 +372,7 @@ sbatch 04_featureCounts.sh
 
 - **Viewing NanoPlot Reports**: HTML reports (e.g., `NanoPlot-report.html`) cannot be opened directly on a headless HPC. Transfer to a local machine:
   ```bash
-  scp username@hpc.server:/home/FCAM/meds5420/YourUsrName/NanoPlot_fastq_QC/WT_D0_1.chr21/NanoPlot-report.html .
+  scp -r YourAccount@transfer.cam.uchc.edu:/home/FCAM/meds5420/YourUsrName/ .
   ```
 
 - **Downstream Analysis**: Use the count matrix for differential expression analysis with DESeq2. See the accompanying R Markdown file (`Deseq_featureCounts_LR.Rmd`) for an example.
