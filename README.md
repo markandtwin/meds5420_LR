@@ -38,7 +38,7 @@ The pipeline was developed for samples like `WT_D0_1.chr21` and `WT_D7_2.chr21`,
 
 data you need from `/home/FCAM/meds5420/Zhang_LR/` directory
 ├── genome_chr21/
-│   ├── hg38_chr21.bedfastq/
+│   ├── hg38_chr21.gtf
 │   ├── hg38_chr21.bed
 │   ├── hg38_chr21.fa
 └── short_read_bam/
@@ -47,18 +47,19 @@ data you need from `/home/FCAM/meds5420/Zhang_LR/` directory
 │   ├── H9-D1-1.chr21.bam.bai
 │   ├── H9-D1-1.chr21.bam
 └── fastq/
-│   ├── WT_D0_1.chr21.fastq
-│   ├── WT_D0_2.chr21.fastq
-│   ├── WT_D0_3.chr21.fastq
-│   ├── WT_D7_1.chr21.fastq
-│   ├── WT_D7_2.chr21.fastq
-│   ├── WT_D7_3.chr21.fastq
+    ├── WT_D0_1.chr21.fastq
+    ├── WT_D0_2.chr21.fastq
+    ├── WT_D0_3.chr21.fastq
+    ├── WT_D7_1.chr21.fastq
+    ├── WT_D7_2.chr21.fastq
+    └── WT_D7_3.chr21.fastq
 ```
 
+
 - `scripts/`: Contains Slurm job scripts for each pipeline step.
-- `fastq/`: Stores input FASTQ files, reference genome, and output directories.
 - `eofile/`: Contains job error and out files.
-- `scripts/`: Contains Slurm job scripts for each pipeline step.
+- `genome_chr21/`: Contains genome sequence, gene annotation in bed and bed files.
+- `fastq/`: Stores input FASTQ files, reference genome, and output directories.
 - `short_read_bam`: Short read RNA-seq data from same samples as reference.
 
 ## Usage
