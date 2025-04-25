@@ -375,7 +375,7 @@ sbatch 04_featureCounts.sh
   scp -r YourAccount@transfer.cam.uchc.edu:/home/FCAM/meds5420/YourUsrName/ .
   ```
 
-- **Downstream Analysis**: Use the count matrix for differential expression analysis with DESeq2. See the accompanying R Markdown file (`Deseq_featureCounts_LR.Rmd`) for an example.
+- **Downstream Analysis**: Use the count matrix for differential expression analysis with DESeq2. See the accompanying R Markdown file (`Deseq2_featureCounts_LR.Rmd`) for an example.
 
 - **Alternative Tools**: For more accurate long-read quantification, consider [IsoQuant](https://github.com/ablab/IsoQuant) or [Bambu](https://github.com/GoekeLab/bambu) instead of `featureCounts`.
 
