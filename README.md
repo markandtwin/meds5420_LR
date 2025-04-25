@@ -27,7 +27,7 @@ The pipeline was developed for samples from two conditions like `WT_D0_*` and `W
 
 
 ## Directory Structure
-
+Prepare a folder in your user diretory for today's long-read RNA-seq data processing, with the substucture like this:
 ```
 ├── scripts/
 │   ├── 01_nanoplot_fastq_qc.sh
@@ -35,8 +35,11 @@ The pipeline was developed for samples from two conditions like `WT_D0_*` and `W
 │   ├── 03_nanoplot_bam_qc.sh
 │   ├── 04_featureCounts.sh
 └── eofiles/
+```
+For the scripts for each step, you can either copy it from the instruction below or from `/home/FCAM/meds5420/Zhang_LR/scripts/`.
 
-data you need from `/home/FCAM/meds5420/Zhang_LR/` directory
+Data that you need access from `/home/FCAM/meds5420/Zhang_LR/` directory (you don't have to make your own copy):
+```
 ├── genome_chr21/
 │   ├── hg38_chr21.gtf
 │   ├── hg38_chr21.bed
@@ -60,24 +63,25 @@ data you need from `/home/FCAM/meds5420/Zhang_LR/` directory
 - `eofile/`: Contains job error and out files.
 - `genome_chr21/`: Contains genome sequence, gene annotation in bed and bed files.
 - `fastq/`: Stores input FASTQ files, reference genome, and output directories.
-- `short_read_bam`: Short read RNA-seq data from same samples as reference.
+- `short_read_bam`: Short-read RNA-seq data from same samples as reference.
 
 ## Usage
 
 Run the pipeline steps sequentially on the HPC cluster using Slurm. Ensure all dependencies are loaded and input files are in place.
 
 ### Step 1: FASTQ Quality Control
+Before you start, make sure you navigate to the `scripts` directory.
 Check the `01_nanoplot_fastq_qc.sh` file to make sure the files are available for all the commands. 
 ```bash
 #!/bin/bash
 #BATCH --job-name=NanoPlot
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -c 4   
-#SBATCH --partition=general
-#SBATCH --qos=general
+#SBATCH -c 3   
+#SBATCH --partition=mcbstudent
+#SBATCH --qos=mcbstudent
 #SBATCH --mail-type=END
-#SBATCH --mem=8G
+#SBATCH --mem=2G
 #SBATCH --mail-user=yourname@uchc.edu
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
@@ -110,10 +114,10 @@ mkdir -p "$OUTPUT_DIR"
 for sample in "$FASTQ_DIR"/*.fastq; do
 
 	# Extract the sample name from the file name
-    SAMPLE_NAME=$(basename "$sample" ".fastq")
+	SAMPLE_NAME=$(basename "$sample" ".fastq")
     
-    # Run NanoPlot
-    NanoPlot 	--fastq "$sample" --loglength -t 4 \
+	# Run NanoPlot
+	NanoPlot --fastq "$sample" --loglength -t 3 \
     			-o "$OUTPUT_DIR/$SAMPLE_NAME" --plots dot
 
 done
@@ -140,13 +144,12 @@ sbatch 01_nanoplot_fastq_qc.sh
 **Output**: HTML and text reports in `/home/FCAM/meds5420/YourUsrName/NanoPlot_fastq_QC/WT_D0_1.chr21/NanoPlot-report.html`.
 
 ### Step 2: Alignment with minimap2
-Check the `02_minimap2.sh` file to make sure the files are available for all the commands. 
+Check the `02_minimap2.sh` file to make sure the files are available for all the commands. For this part, we submit it `general` partition to get more resource.
 ```bash
-#!/bin/bash
 #BATCH --job-name=minimap2
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -c 4   
+#SBATCH -c 10   
 #SBATCH --partition=general
 #SBATCH --qos=general
 #SBATCH --mail-type=END
@@ -177,7 +180,7 @@ FASTQ_DIR="/home/FCAM/meds5420/Zhang_LR/fastq"
 OUTPUT_DIR="../minimap2_bam/"
 
 # Directory to store the reference file
-GENOME_DIR="../genome_chr21/"
+GENOME_DIR="/home/FCAM/meds5420/Zhang_LR/genome_chr21/"
 
 
 
@@ -191,7 +194,7 @@ for sample in "$FASTQ_DIR"/*.fastq; do
     SAMPLE_NAME=$(basename "$sample" ".fastq")
     
     # Run minimap2
-    minimap2 -ax splice -t 4 -B 3 -O 3,20 --junc-bed  "$GENOME_DIR"/*.bed \
+    minimap2 -ax splice -t 10 -B 3 -O 3,20 --junc-bed  "$GENOME_DIR"/*.bed \
 		"$GENOME_DIR"/*.fasta  $sample  > "$OUTPUT_DIR"/$SAMPLE_NAME.sam
 		
 	# Run samtools
@@ -229,11 +232,11 @@ Check the `03_nanoplot_bam_qc.sh` file to make sure the files are available for 
 #BATCH --job-name=NanoPlot
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -c 4   
-#SBATCH --partition=himem2
-#SBATCH --qos=himem
+#SBATCH -c 3   
+#SBATCH --partition=mcbstudent
+#SBATCH --qos=mcbstudent
 #SBATCH --mail-type=END
-#SBATCH --mem=8G
+#SBATCH --mem=2G
 #SBATCH --mail-user=yourname@uchc.edu
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
@@ -253,7 +256,7 @@ echo "Hostname: $(hostname)"
 module load NanoPlot
 
 # Directory containing the bam files
-bam_DIR="/home/FCAM/meds5420/YourUsrName/minimap2_bam"
+bam_DIR="../minimap2_bam"
 
 # Directory to store the output of NanoPlot
 OUTPUT_DIR="../NanoPlot_bam_QC/"
@@ -264,14 +267,12 @@ mkdir -p "$OUTPUT_DIR"
 
 # Loop through all the .bam files in the directory
 for sample in "$bam_DIR"/*.bam; do
-	echo $sample
 
 	# Extract the sample name from the file name
-    SAMPLE_NAME=$(basename "$sample" ".bam")
-    
-    # Run NanoPlot
-    NanoPlot 	--bam $sample --loglength -t 4 \
-    			-o "$OUTPUT_DIR/$SAMPLE_NAME" --plots dot
+	SAMPLE_NAME=$(basename "$sample" ".bam")
+	    
+	# Run NanoPlot
+	NanoPlot --bam "$sample" --loglength -t 3 -o "$OUTPUT_DIR/$SAMPLE_NAME" --plots dot
 
 done
 
@@ -295,7 +296,7 @@ sbatch 03_nanoplot_bam_qc.sh
 
 **Output**: QC reports in `/home/FCAM/meds5420/YourUsrName/NanoPlot_bam_QC/WT_D0_1.chr21/`.
 
-Mount or copy (using `scp`) the `/home/FCAM/meds5420/YourUsrName/` directory to your local machine. Load the short read and long read data side by side to appreciate the difference. Navigate to genes `PAXBP1` `ITSN1` `TRAPPC10` and see what you can find from the data.
+Mount or copy (using `scp`) the `/home/FCAM/meds5420/YourUsrName/` directory to your local machine. Load the short-read and long-read data side by side to appreciate the difference. Navigate to genes `PAXBP1` `ITSN1` `TRAPPC10` and see what you can find from the data.
 
 
 ### Step 4: Gene Quantification with featureCounts
@@ -305,11 +306,11 @@ Check the `04_featureCounts.sh` file to make sure the files are available for al
 #BATCH --job-name=NanoPlot
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -c 4   
-#SBATCH --partition=himem2
-#SBATCH --qos=himem
+#SBATCH -c 1   
+#SBATCH --partition=mcbstudent
+#SBATCH --qos=mcbstudent
 #SBATCH --mail-type=END
-#SBATCH --mem=8G
+#SBATCH --mem=2G
 #SBATCH --mail-user=yourname@uchc.edu
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
@@ -329,10 +330,10 @@ echo "Hostname: $(hostname)"
 module load subread
 
 # Directory containing the bam files
-bam_DIR="/home/FCAM/meds5420/YourUsrName/minimap2_bam"
+bam_DIR="../minimap2_bam"
 
 # Directory to store the reference file
-GENOME_DIR="../genome_chr21/"
+GENOME_DIR="/home/FCAM/meds5420/Zhang_LR/genome_chr21/"
 
 # Directory to store the output of NanoPlot
 OUTPUT_DIR="../featureCounts/"
@@ -342,9 +343,8 @@ mkdir -p "$OUTPUT_DIR"
 
 
 # Run featureCounts from subread module, gene_id could be changed to gene_name
-featureCounts 	-a $GENOME_DIR/hg38_chr21.gtf -L  -g gene_name  \
+featureCounts 	-a $GENOME_DIR/hg38_chr21.gtf -L  -g gene_name -T 1 \
     			-o $OUTPUT_DIR/hg38_chr21_quant_name  $bam_DIR/*.bam
-
 
 echo "featureCounts completed for all samples."
 
@@ -364,7 +364,7 @@ Quantify gene expression by counting reads per gene using Rsubread::featureCount
 sbatch 04_featureCounts.sh
 ```
 
-**Output**: Count matrix in `/home/FCAM/meds5420/YourUsrName/featureCounts/hg38_chr21_quant_name`.
+**Output**: Count matrix at `/home/FCAM/meds5420/YourUsrName/featureCounts/hg38_chr21_quant_name`.
 
 ## Notes
 
