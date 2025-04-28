@@ -296,7 +296,7 @@ sbatch 03_nanoplot_bam_qc.sh
 
 **Output**: QC reports in `/home/FCAM/meds5420/YourUsrName/NanoPlot_bam_QC/WT_D0_1.chr21/`.
 
-Mount or copy (using `scp`) the `/home/FCAM/meds5420/YourUsrName/` directory to your local machine. Load the short-read and long-read data side by side to appreciate the difference. Navigate to genes `PAXBP1` `ITSN1` `TRAPPC10` and see what you can find from the data.
+Mount or copy (using `scp`) the bam files from `/home/FCAM/meds5420/YourUsrName/path to bam files/` directory to your local machine. Load the short-read and long-read data side by side to appreciate the difference. Navigate to genes `PAXBP1` `ITSN1` `TRAPPC10` and see what you can find from the data.
 
 
 ### Step 4: Gene Quantification with featureCounts
