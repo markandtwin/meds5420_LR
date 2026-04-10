@@ -144,6 +144,7 @@ sbatch 01_nanoplot_fastq_qc.sh
 ### Step 2: Alignment with minimap2
 Check the `02_minimap2.sh` file to make sure the files are available for all the commands. For this part, we submit it `general` partition to get more resource.
 ```bash
+#!/bin/bash
 #BATCH --job-name=minimap2
 #SBATCH -N 1
 #SBATCH -n 1
