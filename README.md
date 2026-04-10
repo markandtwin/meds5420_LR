@@ -368,7 +368,7 @@ sbatch 04_featureCounts.sh
 **Output**: Count matrix at `/home/FCAM/meds5420/YourUsrName/featureCounts/hg38_chr21_quant_name`.
 
 
-### Step 5: Gene Quantification with featureCounts
+### Step 5: Alternative splicing analysis with Shiba
 [shiba](https://sika-zheng-lab.github.io/Shiba/) is an alternative analysis tool that works both for short-read and long-read RNA-seq data, and it uses a little way to load the input files and parameter settings. The input files are listed in experiment.tsv, a tab-separated text file of sample ID, path to bam files, and groups for differential analysis.
 ```bash
 sample	bam	group
@@ -565,6 +565,8 @@ You can open the `/plots/summary.html` to get an overview of the analysis. Data 
 - **Downstream Analysis**: Use the count matrix for differential expression analysis with DESeq2. See the accompanying R Markdown file (`Deseq2_featureCounts_LR.Rmd`) for an example.
 
 - **Alternative Tools**: For more accurate long-read quantification, consider [IsoQuant](https://github.com/ablab/IsoQuant) or [Bambu](https://github.com/GoekeLab/bambu) instead of `featureCounts`.
+
+- **Long-read vs short-read**: For comparision between short-read and long-read RNA-seq data, consider using Shiba to run the same analysis with short-read data from the same samples.
 
 ## Troubleshooting
 
