@@ -469,13 +469,88 @@ echo "Total runtime: $((runtime / 60)) minutes and $((runtime % 60)) seconds."
 
 ```
 
-Quantify gene expression by counting reads per gene using Rsubread::featureCounts.
+Quantify alternative events between two groups using Shiba.
 
 ```bash
 sbatch 05_shiba.sh
 ```
 
-**Output**: Count matrix at `/home/FCAM/meds5420/YourUsrName/featureCounts/hg38_chr21_quant_name`.
+**Output**: Output files are at `/home/FCAM/meds5420/YourUsrName/Shiba_AS/D7_vs_D0_AS`:
+```bash
+├── annotation
+│   └── assembled_annotation.gtf
+├── events
+│   ├── EVENT_AFE.txt
+│   ├── EVENT_ALE.txt
+│   ├── EVENT_FIVE.txt
+│   ├── EVENT_MSE.txt
+│   ├── EVENT_MXE.txt
+│   ├── EVENT_RI.txt
+│   ├── EVENT_SE.txt
+│   └── EVENT_THREE.txt
+├── junctions
+│   ├── junctions.bed
+│   └── logs
+│       ├── featureCounts.log
+│       └── regtools.log
+├── plots
+│   ├── data
+│   │   ├── bar_AFE.html
+│   │   ├── bar_ALE.html
+│   │   ├── bar_FIVE.html
+│   │   ├── bar_MSE.html
+│   │   ├── bar_MXE.html
+│   │   ├── bar_RI.html
+│   │   ├── bar_SE.html
+│   │   ├── bar_THREE.html
+│   │   ├── pca_PSI.html
+│   │   ├── pca_TPM.html
+│   │   ├── scatter_AFE.html
+│   │   ├── scatter_ALE.html
+│   │   ├── scatter_FIVE.html
+│   │   ├── scatter_MSE.html
+│   │   ├── scatter_MXE.html
+│   │   ├── scatter_RI.html
+│   │   ├── scatter_SE.html
+│   │   ├── scatter_THREE.html
+│   │   ├── volcano_AFE.html
+│   │   ├── volcano_ALE.html
+│   │   ├── volcano_FIVE.html
+│   │   ├── volcano_MSE.html
+│   │   ├── volcano_MXE.html
+│   │   ├── volcano_RI.html
+│   │   ├── volcano_SE.html
+│   │   └── volcano_THREE.html
+│   └── summary.html
+├── report.txt
+└── results
+    ├── expression
+    │   ├── counts.txt
+    │   ├── CPM.txt
+    │   ├── DEG.txt
+    │   ├── logs
+    │   │   ├── DESeq2.log
+    │   │   └── featureCounts.log
+    │   └── TPM.txt
+    ├── pca
+    │   ├── psi_contribution.tsv
+    │   ├── psi_pca.tsv
+    │   ├── tpm_contribution.tsv
+    │   └── tpm_pca.tsv
+    └── splicing
+        ├── PSI_AFE.txt
+        ├── PSI_ALE.txt
+        ├── PSI_FIVE.txt
+        ├── PSI_matrix_group.txt
+        ├── PSI_matrix_sample.txt
+        ├── PSI_MSE.txt
+        ├── PSI_MXE.txt
+        ├── PSI_RI.txt
+        ├── PSI_SE.txt
+        ├── PSI_THREE.txt
+        └── summary.txt
+```
+You can open the `/plots/summary.html` to get an overview of the analysis. Data tables are in `/results/` and the `/results/summary.txt` will tell you significant events of each type of alternative splicing. 
 
 
 ## Notes
