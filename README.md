@@ -455,6 +455,7 @@ module load shiba
 
 
 # Go to the directory containing you config and experiment file
+mkdir ../Shiba_AS
 cd ../Shiba_AS
 shiba.py  -v -p 4 config.yaml
 
@@ -475,7 +476,7 @@ Quantify alternative events between two groups using Shiba.
 sbatch 05_shiba.sh
 ```
 
-**Output**: Output files are at `/home/FCAM/meds5420/YourUsrName/Shiba_AS/D7_vs_D0_AS`:
+**Output**: Output files are at `/home/FCAM/meds5420/YourUsrName/Shiba_AS/D0_vs_D7_AS/`:
 ```bash
 ├── annotation
 │   └── assembled_annotation.gtf
