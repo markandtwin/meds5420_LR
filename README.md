@@ -1,6 +1,6 @@
-# RNA-seq Analysis Pipeline
+# Long-read RNA-seq Analysis Pipeline
 
-This repository contains a pipeline for processing long-read RNA-seq data, performing quality control (QC), alignment, and gene quantification. The pipeline is designed to run on a High-Performance Computing (HPC) cluster using Slurm job scheduler, leveraging tools like NanoPlot, minimap2, and Rsubread::featureCounts. The output is suitable for downstream differential gene expression analysis (e.g., with DESeq2).
+This repository contains a pipeline for processing long-read RNA-seq data, performing quality control (QC), alignment, and gene quantification. The pipeline is designed to run on a High-Performance Computing (HPC) cluster using Slurm job scheduler, leveraging tools like NanoPlot, minimap2, and Rsubread::featureCounts. The output is suitable for downstream differential gene expression analysis (e.g., with DESeq2) and alternative splicing (using Shiba, etc).
 
 ## Overview
 
@@ -27,13 +27,14 @@ The pipeline was developed for samples from two conditions like `WT_D0_*` and `W
 
 
 ## Directory Structure
-Prepare a folder in your user diretory for today's long-read RNA-seq data processing, with the substucture like this:
+Prepare a folder in your user diretory for this week's long-read RNA-seq data processing, with the substucture like this:
 ```
 ├── scripts/
 │   ├── 01_nanoplot_fastq_qc.sh
 │   ├── 02_minimap2.sh
 │   ├── 03_nanoplot_bam_qc.sh
 │   ├── 04_featureCounts.sh
+|   ├── 05_shiba.sh
 └── eofiles/
 ```
 For the scripts for each step, you can either copy it from the instruction below or from `/home/FCAM/meds5420/Zhang_LR/scripts/`.
@@ -365,6 +366,120 @@ sbatch 04_featureCounts.sh
 ```
 
 **Output**: Count matrix at `/home/FCAM/meds5420/YourUsrName/featureCounts/hg38_chr21_quant_name`.
+
+
+### Step 5: Gene Quantification with featureCounts
+[shiba](https://sika-zheng-lab.github.io/Shiba/) is an alternative analysis tool that works both for short-read and long-read RNA-seq data, and it uses a little way to load the input files and parameter settings. The input files are listed in experiment.tsv, a tab-separated text file of sample ID, path to bam files, and groups for differential analysis.
+```bash
+sample	bam	group
+D0_1	../minimap2_bam/WT_D0_1.chr21.bam	Ref
+D0_2	../minimap2_bam/WT_D0_2.chr21.bam	Ref
+D0_3	../minimap2_bam/WT_D0_3.chr21.bam	Ref
+D7_1	../minimap2_bam/WT_D7_1.chr21.bam	Alt
+D7_2	../minimap2_bam/WT_D7_2.chr21.bam	Alt
+D7_3	../minimap2_bam/WT_D7_3.chr21.bam	Alt
+
+```
+The parameters are pre-defined in config.yaml, a yaml file of the configuration.
+```bash
+workdir:
+  ./D0_vs_D7_AS/ 
+gtf:
+  /home/FCAM/meds5420/Zhang_LR/genome_chr21/hg38_chr21.gtf
+experiment_table:
+  ./experiment.tsv 
+unannotated:
+  True 
+
+# Junction read filtering
+minimum_anchor_length:
+  6 
+minimum_intron_length:
+  70 
+maximum_intron_length:
+  500000 
+strand:
+  XS 
+
+# PSI calculation
+only_psi:
+  False 
+only_psi_group:
+  False 
+fdr:
+  0.05 
+delta_psi:
+  0.1 
+reference_group:
+  Ref 
+alternative_group:
+  Alt 
+minimum_reads:
+  10 
+individual_psi:
+  True 
+ttest:
+  True 
+excel:
+  False
+
+```
+Check the `05_shiba.sh` file to make sure the files are available for all the commands. 
+```bash
+#!/bin/bash
+#BATCH --job-name=NanoPlot
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH -c 1   
+#SBATCH --partition=mcbstudent
+#SBATCH --qos=mcbstudent
+#SBATCH --mail-type=END
+#SBATCH --mem=2G
+#SBATCH --mail-user=yourname@uchc.edu
+#SBATCH --output=../eofiles/%x.%j.out  # Standard output log
+#SBATCH --error=../eofiles/%x.%j.err   # Standard error log
+
+# Print job information
+
+set -e  # Exit immediately if any command fails (important for debugging)
+
+# Record start time
+start_time=$(date +%s)  # Get timestamp in seconds
+
+
+date
+echo "Hostname: $(hostname)"
+
+# Load required modules
+module load shiba
+
+# Load required modules
+module load shiba
+
+
+# Go to the directory containing you config and experiment file
+cd ../Shiba_AS
+shiba.py  -v -p 4 config.yaml
+
+
+# Record end time
+end_time=$(date +%s)  # Get timestamp in seconds
+
+# Calculate runtime duration
+runtime=$((end_time - start_time))
+echo "Pipeline completed successfully."
+echo "Total runtime: $((runtime / 60)) minutes and $((runtime % 60)) seconds."
+
+```
+
+Quantify gene expression by counting reads per gene using Rsubread::featureCounts.
+
+```bash
+sbatch 05_shiba.sh
+```
+
+**Output**: Count matrix at `/home/FCAM/meds5420/YourUsrName/featureCounts/hg38_chr21_quant_name`.
+
 
 ## Notes
 
