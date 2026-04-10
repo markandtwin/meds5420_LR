@@ -87,9 +87,6 @@ Check the `01_nanoplot_fastq_qc.sh` file to make sure the files are available fo
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
 
-# Print job information
-
-set -e  # Exit immediately if any command fails (important for debugging)
 
 # Record start time
 start_time=$(date +%s)  # Get timestamp in seconds
@@ -159,9 +156,6 @@ Check the `02_minimap2.sh` file to make sure the files are available for all the
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
 
-# Print job information
-
-set -e  # Exit immediately if any command fails (important for debugging)
 
 # Record start time
 start_time=$(date +%s)  # Get timestamp in seconds
@@ -182,7 +176,6 @@ OUTPUT_DIR="../minimap2_bam/"
 
 # Directory to store the reference file
 GENOME_DIR="/home/FCAM/meds5420/Zhang_LR/genome_chr21/"
-
 
 
 # Create the output directory if it doesn't exist
@@ -242,9 +235,6 @@ Check the `03_nanoplot_bam_qc.sh` file to make sure the files are available for 
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
 
-# Print job information
-
-set -e  # Exit immediately if any command fails (important for debugging)
 
 # Record start time
 start_time=$(date +%s)  # Get timestamp in seconds
@@ -316,9 +306,6 @@ Check the `04_featureCounts.sh` file to make sure the files are available for al
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
 
-# Print job information
-
-set -e  # Exit immediately if any command fails (important for debugging)
 
 # Record start time
 start_time=$(date +%s)  # Get timestamp in seconds
@@ -439,9 +426,6 @@ Check the `05_shiba.sh` file to make sure the files are available for all the co
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
 
-# Print job information
-
-set -e  # Exit immediately if any command fails (important for debugging)
 
 # Record start time
 start_time=$(date +%s)  # Get timestamp in seconds
@@ -453,6 +437,8 @@ echo "Hostname: $(hostname)"
 # Load required modules
 module load shiba
 
+# Create the output directory if it doesn't exist
+mkdir -p "../Shiba_AS"
 
 # Go to the directory containing you config and experiment file
 mkdir ../Shiba_AS
