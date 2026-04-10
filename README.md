@@ -430,11 +430,11 @@ Check the `05_shiba.sh` file to make sure the files are available for all the co
 #BATCH --job-name=NanoPlot
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -c 1   
+#SBATCH -c 4   
 #SBATCH --partition=mcbstudent
 #SBATCH --qos=mcbstudent
 #SBATCH --mail-type=END
-#SBATCH --mem=2G
+#SBATCH --mem=5G
 #SBATCH --mail-user=yourname@uchc.edu
 #SBATCH --output=../eofiles/%x.%j.out  # Standard output log
 #SBATCH --error=../eofiles/%x.%j.err   # Standard error log
@@ -449,9 +449,6 @@ start_time=$(date +%s)  # Get timestamp in seconds
 
 date
 echo "Hostname: $(hostname)"
-
-# Load required modules
-module load shiba
 
 # Load required modules
 module load shiba
