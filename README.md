@@ -21,6 +21,7 @@ The pipeline was developed for samples from two conditions like `WT_D0_*` and `W
   - minimap2 (`minimap2`)
   - samtools (`samtools`)
   - featureCounts within subread (`subread`)
+  - Shiba (`Shiba`)
 - **Input Files**:
   - FASTQ files (e.g., `/home/FCAM/meds5420/Zhang_LR/fastq/WT_D0_1.chr21.fastq`)
   - Reference genome (e.g., `hg38_chr21.fa`)
