@@ -9,6 +9,7 @@ The pipeline processes FASTQ files from long-read RNA-seq (e.g., Oxford Nanopore
 2. **Alignment**: Align FASTQ reads to a reference genome using minimap2.
 3. **BAM Quality Control**: Assess alignment quality with NanoPlot on BAM files.
 4. **Gene Quantification**: Count reads per gene using featureCounts in subread.
+5. **Alternative Splicing**: Analyze alternative splicing using Shiba.
 
 The pipeline was developed for samples from two conditions like `WT_D0_*` and `WT_D7_*`, as used in a differential expression analysis comparing wild-type conditions at day 0 and day 7.
 
