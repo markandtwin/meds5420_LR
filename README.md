@@ -39,7 +39,7 @@ Prepare a folder in your user diretory for this week's long-read RNA-seq data pr
 |   ├── 05_shiba.sh
 └── eofiles/
 ```
-For the scripts for each step, you can either copy it from the instruction below or from `/home/FCAM/meds5420/Zhang_LR/scripts/`.
+For the scripts for each step, you can either copy it from the instruction below or from `/home/FCAM/meds5420/Zhang_LR/scripts/` or copy it here from this page in each section using the copy button.
 
 Data that you need access from `/home/FCAM/meds5420/Zhang_LR/` directory (you don't have to make your own copy):
 ```
