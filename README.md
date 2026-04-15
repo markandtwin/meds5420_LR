@@ -444,7 +444,6 @@ module load shiba
 mkdir -p "../Shiba_AS"
 
 # Go to the directory containing you config and experiment file
-mkdir ../Shiba_AS
 cd ../Shiba_AS
 shiba.py  -v -p 4 config.yaml
 
