@@ -359,7 +359,7 @@ sbatch 04_featureCounts.sh
 
 
 ### Step 5: Alternative splicing analysis with Shiba
-[Shiba](https://sika-zheng-lab.github.io/Shiba/) is an alternative analysis tool that works both for short-read and long-read RNA-seq data, and it uses a little way to load the input files and parameter settings. The input files are listed in experiment.tsv, a tab-separated text file of sample ID, path to bam files, and groups for differential analysis.
+[Shiba](https://sika-zheng-lab.github.io/Shiba/) is an alternative analysis tool that works both for short-read and long-read RNA-seq data, and it uses a little way to load the input files and parameter settings. Let's make a `Shiba_AS` directory in the foler that contains `scripts` and all the other output folders. The input files are listed in experiment.tsv, a tab-separated text file of sample ID, path to bam files, and groups for differential analysis. 
 ```bash
 sample	bam	group
 D0_1	../minimap2_bam/WT_D0_1.chr21.bam	Ref
@@ -414,7 +414,7 @@ excel:
   False
 
 ```
-Check the `05_shiba.sh` file to make sure the files are available for all the commands. 
+Make sure both `experiment.tsv` and `config.yaml` are in the `Shiba-AS` directory. Then we go back to `scripts` and check the `05_shiba.sh` file to make sure the files are available for all the commands. 
 ```bash
 #!/bin/bash
 #BATCH --job-name=NanoPlot
