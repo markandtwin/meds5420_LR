@@ -359,15 +359,15 @@ sbatch 04_featureCounts.sh
 
 
 ### Step 5: Alternative splicing analysis with Shiba
-[Shiba](https://sika-zheng-lab.github.io/Shiba/) is an alternative analysis tool that works both for short-read and long-read RNA-seq data, and it uses a little way to load the input files and parameter settings. Let's make a `Shiba_AS` directory in the foler that contains `scripts` and all the other output folders. The input files are listed in `experiment.tsv`, a tab-separated text file of sample ID, path to bam files, and groups for differential analysis. 
+[Shiba](https://sika-zheng-lab.github.io/Shiba/) is an alternative analysis tool that works both for short-read and long-read RNA-seq data, and it uses a little way to load the input files and parameter settings. Let's make a `Shiba_AS` directory in the foler that contains `scripts` and all the other output folders. The input files are listed in `experiment.tsv`, a tab-separated text file of sample ID, path to bam files, and groups for differential analysis. Shiba works with both short-read and long-read data, when short read data is used, the 4th column could be omited.
 ```bash
-sample	bam	group
-D0_1	../minimap2_bam/WT_D0_1.chr21.bam	Ref
-D0_2	../minimap2_bam/WT_D0_2.chr21.bam	Ref
-D0_3	../minimap2_bam/WT_D0_3.chr21.bam	Ref
-D7_1	../minimap2_bam/WT_D7_1.chr21.bam	Alt
-D7_2	../minimap2_bam/WT_D7_2.chr21.bam	Alt
-D7_3	../minimap2_bam/WT_D7_3.chr21.bam	Alt
+sample	bam	group	technology
+D0_1	../minimap2_bam/WT_D0_1.chr21.bam	Ref	long
+D0_2	../minimap2_bam/WT_D0_2.chr21.bam	Ref	long
+D0_3	../minimap2_bam/WT_D0_3.chr21.bam	Ref	long
+D7_1	../minimap2_bam/WT_D7_1.chr21.bam	Alt	long
+D7_2	../minimap2_bam/WT_D7_2.chr21.bam	Alt	long
+D7_3	../minimap2_bam/WT_D7_3.chr21.bam	Alt	long
 
 ```
 The parameters are pre-defined in `config.yaml`, a yaml file of the configuration.
